@@ -23,8 +23,8 @@ def move():
 
 # Create your objects here.
 ev3 = EV3Brick()
-motorc=Motor(Port.C)
-motorb=Motor(Port.B)
+motorc=Motor(Port.C) #right
+motorb=Motor(Port.B) #left
 chainsaw = Motor(Port.D)
 robot = DriveBase(motorb, motorc, wheel_diameter=55.5,
 axle_track=104)
@@ -35,6 +35,10 @@ obstacle_sensor = UltrasonicSensor(Port.S4)
 color_sensor = ColorSensor(Port.S2)
 touch1 = TouchSensor(Port.S1)
 touch3 = TouchSensor(Port.S3)
+gyro_sensor = GyroSensor(Port.S2)
+
+
+
 """
 ev3.speaker.say("Auf der Heide blüht ein kleines Blümelein und das heißt: ErikaHeiß von hunderttausend kleinen Bienelein wird umschwärmt Erika, denn ihr Herz ist voller Süßigkeit, zarter Duft entströmt dem Blütenkleid. Auf der Heide blüht ein kleines Blümelein und das heißt: Erika.")
 """
@@ -60,10 +64,6 @@ def sing():
     wait(750)
 def go_forth_forever():
     while True:
-        color = color_sensor.color()
-        if color.Black:
-            amogus()
-            robot.drive(-1000,0)
         robot.drive(1000, 0)
         chainsaw.run_time(2000,1000)
         if touch1.pressed() or touch3.pressed():
@@ -77,6 +77,12 @@ def go_forth_forever():
             ev3.speaker.beep(frequency=500,duration=500)
             robot.turn(105)
 
+def go_forth_straight_forever():
+    gyro_reset()
+    while True:
+        gyro_stright(1000)
+
+        
 
 
 def activate_chainsaw():
@@ -102,6 +108,51 @@ def move():
     ev3.speaker.play_file(SoundFile.STOP)
     robot.turn(360)
 
+
+def gyro_reset():
+    gyro_sensor.reset_angle(0)
+    while True:
+        if gyro_sensor.angle == 0:
+            break
+    while True:
+        if gyro_sensor.speed() == 0:
+
+def gyro_straight(distance):
+    target = gyro_sensor.angle()
+    gain = 2
+    robot.reset()
+
+    while robot.distance() < distance:
+        correction = target - gyro_sensor.angle()
+        turn_power = correction * gain
+
+        robot.drive(100,turn_power)
+
+def gyro_turn_right(degrees):
+    gyro_reset
+
+    while gyro_sensor.angle() < degrees:
+        motorb.run(100)
+    motorb.stop()
+
+def gyro_turn_left(degrees):
+    gyro_reset
+
+    while gyro_sensor.angle() < degrees:
+        motorc.run(100)
+    motorc.stop()
+
+
+
+
+
+
+
+
+
+
+
+
 """
 go_forth()
 sing()
@@ -109,4 +160,3 @@ better_off_alone()
 """
 
 go_forth_forever()
-cut_through_obstacle()
