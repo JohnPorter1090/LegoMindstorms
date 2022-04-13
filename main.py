@@ -82,7 +82,15 @@ def go_forth_straight_forever():
     while True:
         gyro_stright(1000)
 
-        
+    def robot_yield():
+        while obstacle_sensor.distance() < 350:
+            robot.straight(500)
+            if touch1.pressed() or touch3.press():
+                ev3.speaker.beep(frequency=500, duration=100)
+                robot.straight(-100)
+                ev3.speaker.beep(frequency=500, duration=100)
+                robot.turn(105)
+                ev3.speaker.beep(frequency=500, duration=100)
 
 
 def activate_chainsaw():
