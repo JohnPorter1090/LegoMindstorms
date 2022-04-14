@@ -20,10 +20,18 @@ gyro_sensor = GyroSensor(Port.S2)
 
 xy = y
 number = 0
+
+
 x_value = 0
 y _value = 0
+
+
+
 gyro_sensor.reset_angle(0)
-facingdegrees = gyro.angle()
+
+
+
+directional_degrees = 0
 def reset_gyro():
     gyro_sensor.reset_angle(0)
     while True:
@@ -48,26 +56,53 @@ def gyro_straight(distance):
 
 def turn_left(degrees):
     while gyro_sensor.angle > degrees:
-        motorb.run(100)
+        motorb.run(degrees)
     motorb.stop()
-    xy = 
-
+    number += 1
+        directional_degrees += 90
+    if number % 2 == 1:
+        xy = x
+    elif number % 2 == 0:
+        xy = y
+    
+def get_correct_angel():
+    directrional_degrees 
+    if directional_degrees == 360:
+        directional_degrees = 0
+    elif directional_degrees == -90:
+        directional_degrees = 270
+    elif directional_degrees == 450:
+        directional_degrees = 90
+    elif direcional_degrees == -180:
+        directional_degrees = 180
 
 def turn_right(degrees):
     while gyro_sensor.angle > degrees:
-        motorc.run(100)
+        motorc.run(degrees)
     motorc.stop()
     number += 1
-    if number % 2 == 0:
+    directional_degrees -= 90
+    if number % 2 == 1:
         xy = x
-    elif number % 2 == 1:
+    elif number % 2 == 0:
         xy = y
-    if d
 
-def go_to_zero_zero():
-    target = gyro_sensor.angle()
+# Directional_Degrees
+# 0 facing  N   Y
+# 90 facing  E   X
+# 180 facing  S   Y
+# 270 facing   W   X
+
+def go_to_coordinate(direction, x_coord, y_coord)
+    while directional_degrees != direction:
+        turn_right(90)
+        directonal_degrees -= 90
+
+
+def go_to_zero_zero(target):
+    target = 270
     gain = 3
-    robot.reset()
+    robot.reset() 
     correction = (target - gyro_sensor.angle())*gain
     if xy = y:
         robot.drive(-y_value, correction)
