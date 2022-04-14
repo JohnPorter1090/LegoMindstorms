@@ -10,9 +10,8 @@ Gameplan:
 6. Ultrasonic on back detects back wall and starts the goal dropoff sequence once certain distance-FIND THIS DISTANCE WITH TEST to see when turn 
     if whole robot + cap holder will stay in goal (check that against movement values of location to see if there is another robot)
 7. Drop off sequence: Check floor for correct color, then turn 90 drive to far end and open box, back up and continue sequence of picking up caps
-8. MAybe something cool at end like steal caps
-
-9. at end bulldoze other teams goal
+8. Maybe something cool at end like steal caps, like:
+    -at end bulldoze other teams goal
 
 -Touch in front if robot detected goes to ultrasonic in back to get position
 -Upon robot detected, do something (ram into maybe) and then leave using ultrasonic for position
