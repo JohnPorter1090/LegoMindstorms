@@ -53,14 +53,30 @@ def distance(millimeters): #converts distance in mm to 1/4 in
 x =  0
 y = 0 
 
-def absolute_straight:
-    while True:
-        if gyro_sensor.angle < 1 and gyro_sensor.angle > -1:
-            robot.straight(1000)
-        elif gyro_sensor.angle < 180:
+def absolute_straight():
+        if gyro_sensor.angle() <= 1 and gyro_sensor.angle() >= -1:
+            robot.straight(10)
+        elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 1:
             robot.turn(1)
-        elif gyro_sensor.angle > 180:
+            print("angle too low")
+        elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -1:
             robot.turn(-1)
-        elif gyro_sensor.angle == 180:
+            print("angle too high")
+        elif gyro_sensor.angle() == 180:
             robot.turn(180)
-        
+
+
+def turn_on_buttonpress():
+    if touchsensor.pressed():
+        robot.straight(-300)
+        while gyro_sensor.angle() < 180 or gyro_sensor.angle() < -180:
+            robot.turn(-10)
+            print("low")
+        while gyro_sensor.angle() > 180 or gyro_sensor.angle() > -180:
+            robot.turn(10)
+            print("high")
+        gyro_sensor.reset_angle(0)
+        print("angle reset")
+while True:
+    turn_on_buttonpress()
+    absolute_straight()
