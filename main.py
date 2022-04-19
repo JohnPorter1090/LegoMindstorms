@@ -56,6 +56,9 @@ def get_correct_angle(directional_degrees):
     elif directional_degrees == -180:
         directional_degrees = 180
 
+while True:
+    ev3.speaker.beep(frequency=1000,duration=500)
+    ev3.speaker.beep(frequency=750 ,duration=500)
 
 def reset_gyro():
     gyro_sensor.reset_angle(0)
@@ -159,7 +162,7 @@ def go_to_coordinate(direction, x_coord, y_coord, directional_degrees):
                      .*****************,,,,,,,******                            
                              .,************..                                   
                                                                                 
-                                                                                
+                                                                                 
                                                                                 
                                                                                 
                                                                                 
