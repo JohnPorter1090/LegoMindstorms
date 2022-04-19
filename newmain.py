@@ -35,9 +35,9 @@ Gameplan:
 """
 
 ev3 = EV3Brick()
-motorc=Motor(Port.C) #right
-motorb=Motor(Port.B) #left
-chainsaw = Motor(Port.D)
+motorc=Motor(Port.B) #right
+motorb=Motor(Port.C) #left
+touchsensor = TouchSensor(Port.S3)
 robot = DriveBase(motorb, motorc, wheel_diameter=55.5,
 axle_track=104)
 ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)

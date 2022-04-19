@@ -9,8 +9,8 @@ import time
 
 
 ev3 = EV3Brick()
-motorc=Motor(Port.C) #right
-motorb=Motor(Port.B) #left
+motorc=Motor(Port.B) #right
+motorb=Motor(Port.C) #left
 chainsaw = Motor(Port.D)
 robot = DriveBase(motorb, motorc, wheel_diameter=55.5,
 axle_track=104)
