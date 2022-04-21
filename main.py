@@ -57,6 +57,7 @@ y = 0
 def absolute_straight():
         if gyro_sensor.angle() <= 1 and gyro_sensor.angle() >= -1:
             robot.straight(10)
+            x += distance(10)
         elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 1:
             robot.turn(1)
             print("angle too low")
