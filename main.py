@@ -1,11 +1,13 @@
+#!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile, Font
-import time
+from pybricks.media.ev3dev import SoundFile, ImageFile
+
+ev3 = EV3Brick()
 
 
 
@@ -33,8 +35,6 @@ Gameplan:
 -Upon robot detected, do something (ram into maybe) and then leave using ultrasonic for position
 
 """
-
-ev3 = EV3Brick()
 motorc=Motor(Port.B) #right
 motorb=Motor(Port.C) #left
 touchsensor = TouchSensor(Port.S3)
@@ -51,13 +51,12 @@ def distance(millimeters): #converts distance in mm to 1/4 in
     distance_value = ((millimeters/25.4)/4)
     return distance_value
 
-x =  0
+x = 0
 y = 0 
 
 def absolute_straight():
         if gyro_sensor.angle() <= 1 and gyro_sensor.angle() >= -1:
-            robot.straight(10)
-            x += distance(10)
+            robot.straight(300)
         elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 1:
             robot.turn(1)
             print("angle too low")
