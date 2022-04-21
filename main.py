@@ -43,7 +43,7 @@ axle_track=104)
 ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)
 ev3.speaker.set_volume(1000)
 gyro_sensor = GyroSensor(Port.S2)
-
+door = Motor(Port.A)
 
 gyro_sensor.reset_angle(0)
 
@@ -55,29 +55,36 @@ x = 0
 y = 0 
 
 def absolute_straight():
-        if gyro_sensor.angle() <= 1 and gyro_sensor.angle() >= -1:
+        if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
             robot.straight(300)
-        elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 1:
-            robot.turn(1)
-            print("angle too low")
-        elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -1:
-            robot.turn(-1)
-            print("angle too high")
+            door.run_time(-1000, 300)
+        elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
+            robot.turn(10)
+            print("straight: angle too low")
+            screen.print("straight: angle too low")
+        elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -5:
+            robot.turn(-10)
+            print("straight: angle too high")
+            screen.print("straight: angle too high")
         elif gyro_sensor.angle() == 180:
             robot.turn(180)
 
 
 def turn_on_buttonpress():
     if touchsensor.pressed():
-        robot.straight(-300)
+        robot.straight(300)
         while gyro_sensor.angle() < 180 or gyro_sensor.angle() < -180:
             robot.turn(-10)
-            print("low")
+            print("button: low")
+            screen.print("button: low")
         while gyro_sensor.angle() > 180 or gyro_sensor.angle() > -180:
-            robot.turn(10)
-            print("high")
+            robot.turn(20)
+            print("button: high")
+            screen.print("button: high")
         gyro_sensor.reset_angle(0)
-        print("angle reset")
+        print("button: angle reset")
+        screen.print("button: angle reset")
+
 while True:
     turn_on_buttonpress()
     absolute_straight()
