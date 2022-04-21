@@ -44,8 +44,18 @@ ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)
 ev3.speaker.set_volume(1000)
 gyro_sensor = GyroSensor(Port.S2)
 door = Motor(Port.A)
+ears = UltrasonicSensor(Port.D)
+
+#
+#
+# add a function here that inputs a turn angle and makes a perfect turn
+#
+#
 
 gyro_sensor.reset_angle(0)
+
+init_color = color_sensor.color() #Detects the color of the goal for the side that the robot is on
+
 
 def distance(millimeters): #converts distance in mm to 1/4 in
     distance_value = ((millimeters/25.4)/4)
@@ -72,19 +82,36 @@ def absolute_straight():
 
 def turn_on_buttonpress():
     if touchsensor.pressed():
-        robot.straight(300)
+        robot.straight(30)
+        robot.straight(-300)
         while gyro_sensor.angle() < 180 or gyro_sensor.angle() < -180:
             robot.turn(-10)
             print("button: low")
             screen.print("button: low")
         while gyro_sensor.angle() > 180 or gyro_sensor.angle() > -180:
-            robot.turn(20)
+            robot.turn(10)
             print("button: high")
             screen.print("button: high")
         gyro_sensor.reset_angle(0)
         print("button: angle reset")
         screen.print("button: angle reset")
 
+def deposit_bottlecaps(goalcolor):
+    if color_sensor.color() == goalcolor:
+        if ears.distance() <= 100:
+            door.run_time(-1000, 500)
+        elif ears.distance > 100:
+            robot.turn(180)
+        else:
+            robot.turn(180)
+
+
+
 while True:
     turn_on_buttonpress()
     absolute_straight()
+    deposit_bottlecaps(init_color)
+
+    
+    
+    
