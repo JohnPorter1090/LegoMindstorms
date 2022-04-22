@@ -38,9 +38,11 @@ axle_track=104)
 ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)
 ev3.speaker.set_volume(1000)
 gyro_sensor = GyroSensor(Port.S2)
-door = Motor(Port.A)
-ears = UltrasonicSensor(Port.D)
-color_sensor = ColorSensor(Port.S1)
+door = Motor(Port.D)
+ears = UltrasonicSensor(Port.S1)
+color_sensor = ColorSensor(Port.S4)
+
+
 
 gyro_sensor.reset_angle(0)
 
@@ -49,32 +51,12 @@ gyro_sensor.reset_angle(0)
 base_side_color = color_sensor.color()
 
 
- goal_color = color.RED # SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE
+goal_color = Color.RED # SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE
 
-if goal_color == color.RED:
-    apponent_color = color.BLUE
+if goal_color == Color.RED:
+    apponent_color = Color.BLUE
 else:
-    apponent_color = color.RED
-
-
-#
-#
-
-def absolute_straight(distance):
-    while True:
-        if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
-            robot.straight(distance)
-            break
-        elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
-            robot.turn(10)
-            print("straight: angle too low")
-            screen.print("straight: angle too low")
-        elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -5:
-            robot.turn(-10)
-            print("straight: angle too high")
-            screen.print("straight: angle too high")
-        elif gyro_sensor.angle() == 180:
-            robot.turn(180)
+    apponent_color = Color.RED
 
 def absolute_turn(degrees):
     margine_of_error = 2
@@ -85,8 +67,8 @@ def absolute_turn(degrees):
     while True:
         turning_degrees = gyro_sensor.angle() - starting_gyro_degrees
         print(turning_degrees)
-        screen.print(turning_degrees)
-        if turning_degrees > degrees - margine_of_error or turning_degrees < degrees + margine_of_error
+        #screen.draw_text(turning_degrees)
+        if turning_degrees > degrees - margine_of_error or turning_degrees < degrees + margine_of_error:
             break
 
 
@@ -95,6 +77,26 @@ def absolute_turn(degrees):
         elif turning_degrees < degrees:
             robot.turn(10)
         
+
+#
+#
+
+def absolute_straight(distance):
+    while True:
+        if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
+            robot.straight(distance)
+            break
+        elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
+            absolute_turn(10)
+            print("straight: angle too low")
+            #screen.draw_text("straight: angle too low")
+        elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -5:
+            absolute_turn(-10)
+            print("straight: angle too high")
+            #screen.draw_text("straight: angle too high")
+        elif gyro_sensor.angle() == 180:
+            absolute_turn(180)
+
 
         
         
@@ -111,15 +113,12 @@ x = 0
 y = 0 
 
 
-def deposit_bottlecaps():
-
-
 
 def go_to_middle():
     while True:
-        screen.print(ears.distance())
+        #screen.draw_text(ears.distance())
         if ears.distance() <= 1200:
-            absolute_straight(100):
+            absolute_straight(-100)
         else:
             absolute_turn(90)
             break
@@ -131,24 +130,6 @@ def collect_bottle_caps():
     absolute_straight(distance_to_wall)
     door.run_time(1000, door_close_time)
 
-
-"""
-def turn_on_buttonpress():
-    if touchsensor.pressed():
-        robot.straight(30)
-        robot.straight(-300)
-        while gyro_sensor.angle() < 180 or gyro_sensor.angle() < -180:
-            robot.turn(-10)
-            print("button: low")
-            screen.print("button: low")
-        while gyro_sensor.angle() > 180 or gyro_sensor.angle() > -180:
-            robot.turn(10)
-            print("button: high")
-            screen.print("button: high")
-        gyro_sensor.reset_angle(0)
-        print("button: angle reset")
-        screen.print("button: angle reset")
-""""
 
 def return_to_goal():
     absolute_turn(90)
@@ -176,10 +157,10 @@ def deposit_on_goal(goal_color):
         if color_sensor.color() == goal_color:
             while True:
                 absolute_straight(20)
-                if 
+ 
 
 
 go_to_middle()
-screen.print("I'm in the middle!")
+#screen.draw_text("I'm in the middle!")
 
     
