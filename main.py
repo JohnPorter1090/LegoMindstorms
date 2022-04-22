@@ -9,13 +9,6 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 
 ev3 = EV3Brick()
 
-
-
-
-
-
-
-
 """
 Gameplan:
 
@@ -35,6 +28,8 @@ Gameplan:
 -Upon robot detected, do something (ram into maybe) and then leave using ultrasonic for position
 
 """
+
+
 motorc=Motor(Port.B) #right
 motorb=Motor(Port.C) #left
 touchsensor = TouchSensor(Port.S3)
@@ -62,8 +57,6 @@ else:
     apponent_color = color.RED
 
 
-
-door_position = ("open")
 #
 #
 
@@ -102,6 +95,7 @@ def absolute_turn(degrees):
         elif turning_degrees < degrees:
             robot.turn(10)
         
+
         
         
 #
@@ -116,25 +110,29 @@ def distance(millimeters): #converts distance in mm to 1/4 in
 x = 0
 y = 0 
 
+
 def deposit_bottlecaps():
 
 
-def go_to_middle(base_side_color):
+
+def go_to_middle():
     while True:
-        if color_sensor.color() = base_side_color:
-            absolute_straight():
-        elif color_sensor.color() != base_side_color:
+        screen.print(ears.distance())
+        if ears.distance() <= 1200:
+            absolute_straight(100):
+        else:
             absolute_turn(90)
             break
 
-"""
-"""
+
 def collect_bottle_caps():
     distance_to_wall = 1000
     door_close_time = 150
     absolute_straight(distance_to_wall)
     door.run_time(1000, door_close_time)
-""""""
+
+
+"""
 def turn_on_buttonpress():
     if touchsensor.pressed():
         robot.straight(30)
@@ -150,7 +148,8 @@ def turn_on_buttonpress():
         gyro_sensor.reset_angle(0)
         print("button: angle reset")
         screen.print("button: angle reset")
-""""""
+""""
+
 def return_to_goal():
     absolute_turn(90)
     absolute_straight(1000)
@@ -172,17 +171,15 @@ def go_to_apponents_goal():
             absolute_straight(-30)
 
 
-def deposit_on_goal(door_position):
+def deposit_on_goal(goal_color):
     while True:
-        
+        if color_sensor.color() == goal_color:
+            while True:
+                absolute_straight(20)
+                if 
 
 
+go_to_middle()
+screen.print("I'm in the middle!")
 
-
-    
-
-go_to_middle(base_side_color)
-
-    
-    
     
