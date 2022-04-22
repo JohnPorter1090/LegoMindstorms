@@ -45,29 +45,33 @@ ev3.speaker.set_volume(1000)
 gyro_sensor = GyroSensor(Port.S2)
 door = Motor(Port.A)
 ears = UltrasonicSensor(Port.D)
-
-#
-#
-# add a function here that inputs a turn angle and makes a perfect turn
-#
-#
+color_sensor = ColorSensor(Port.S1)
 
 gyro_sensor.reset_angle(0)
 
-init_color = color_sensor.color() #Detects the color of the goal for the side that the robot is on
 
 
-def distance(millimeters): #converts distance in mm to 1/4 in
-    distance_value = ((millimeters/25.4)/4)
-    return distance_value
+base_side_color = color_sensor.color()
 
-x = 0
-y = 0 
 
-def absolute_straight():
+ goal_color = color.RED # SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE
+
+if goal_color == color.RED:
+    apponent_color = color.BLUE
+else:
+    apponent_color = color.RED
+
+
+
+door_position = ("open")
+#
+#
+
+def absolute_straight(distance):
+    while True:
         if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
-            robot.straight(300)
-            door.run_time(-1000, 300)
+            robot.straight(distance)
+            break
         elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
             robot.turn(10)
             print("straight: angle too low")
@@ -79,7 +83,58 @@ def absolute_straight():
         elif gyro_sensor.angle() == 180:
             robot.turn(180)
 
+def absolute_turn(degrees):
+    margine_of_error = 2
+    turning_degrees = 0
+    starting_gyro_degrees = gyro_sensor.angle()
 
+
+    while True:
+        turning_degrees = gyro_sensor.angle() - starting_gyro_degrees
+        print(turning_degrees)
+        screen.print(turning_degrees)
+        if turning_degrees > degrees - margine_of_error or turning_degrees < degrees + margine_of_error
+            break
+
+
+        elif turning_degrees > degrees:
+            robot.turn(-10)
+        elif turning_degrees < degrees:
+            robot.turn(10)
+        
+        
+        
+#
+#
+
+
+
+def distance(millimeters): #converts distance in mm to 1/4 in
+    distance_value = ((millimeters/25.4)/4)
+    return distance_value
+
+x = 0
+y = 0 
+
+def deposit_bottlecaps():
+
+
+def go_to_middle(base_side_color):
+    while True:
+        if color_sensor.color() = base_side_color:
+            absolute_straight():
+        elif color_sensor.color() != base_side_color:
+            absolute_turn(90)
+            break
+
+"""
+"""
+def collect_bottle_caps():
+    distance_to_wall = 1000
+    door_close_time = 150
+    absolute_straight(distance_to_wall)
+    door.run_time(1000, door_close_time)
+""""""
 def turn_on_buttonpress():
     if touchsensor.pressed():
         robot.straight(30)
@@ -95,22 +150,38 @@ def turn_on_buttonpress():
         gyro_sensor.reset_angle(0)
         print("button: angle reset")
         screen.print("button: angle reset")
-
-def deposit_bottlecaps(goalcolor):
-    if color_sensor.color() == goalcolor:
-        if ears.distance() <= 100:
-            door.run_time(-1000, 500)
-        elif ears.distance > 100:
-            robot.turn(180)
+""""""
+def return_to_goal():
+    absolute_turn(90)
+    absolute_straight(1000)
+    while True:
+        if ears.distance() <= 50:
+            absolute_turn(90)
+            break
         else:
-            robot.turn(180)
+            absolute_straight(30)
+
+def go_to_apponents_goal():
+    absolute_turn(-90)
+    absolute_straight(-1000)
+    while True:
+        if ears.distance() <= 50:
+            absolute_turn(-90)
+            break
+        else:
+            absolute_straight(-30)
+
+
+def deposit_on_goal(door_position):
+    while True:
+        
 
 
 
-while True:
-    turn_on_buttonpress()
-    absolute_straight()
-    deposit_bottlecaps(init_color)
+
+    
+
+go_to_middle(base_side_color)
 
     
     
