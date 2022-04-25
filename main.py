@@ -71,6 +71,7 @@ def absolute_straight(distance):
     while True:
         if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
             robot.straight(distance)
+            motorb.run_time(1000, distance*10)
             break
         elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
             robot.turn(10)
@@ -176,13 +177,15 @@ def deposit_on_goal(door_position):
     while True:
         
 
+#WARNING THESE VALUES HAVE NOT BEEN TESTED
+#ROBOT MUST BE MONITORED WHILST OPERATING
+
+absolute_straight(2425)
+door.run_time(-1000, 2000)
+absolute_turn(180)
+absolute_straight(2425)
+door.run_time(1000, 2000)
 
 
-
-    
-
-go_to_middle(base_side_color)
-
-    
     
     
