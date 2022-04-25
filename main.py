@@ -53,7 +53,7 @@ goal_color = Color.RED # SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR 
 if goal_color == Color.RED:
     apponent_color = Color.BLUE
 else:
-    apponent_color = color.RED
+    apponent_color = Color.RED
 
 
 
@@ -77,18 +77,17 @@ def absolute_straight(distance):
 
 
 def absolute_turn(degrees):
-    margine_of_error = 2
+    margin_of_error = 2
     turning_degrees = 0
     starting_gyro_degrees = gyro_sensor.angle()
-
 
     while True:
         turning_degrees = gyro_sensor.angle() - starting_gyro_degrees
         print("Current: " + turning_degrees + " Target: " + degrees) 
         #screen.draw_text(turning_degrees)
-        if turning_degrees > degrees - margine_of_error or turning_degrees < degrees + margine_of_error:
+        if turning_degrees > degrees - margin_of_error or turning_degrees < degrees + margin_of_error:
             break
-        print("Turn completed")
+            print("Turn completed")
 
 
         elif turning_degrees > degrees:
