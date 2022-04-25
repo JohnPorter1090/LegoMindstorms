@@ -48,9 +48,6 @@ gyro_sensor.reset_angle(0)
 
 
 
-base_side_color = color_sensor.color()
-
-
 goal_color = Color.RED # SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE SET GOAL COLOR HERE
 
 if goal_color == Color.RED:
@@ -60,26 +57,24 @@ else:
 
 
 
-door_position = ("open")
-#
 #
 
 def absolute_straight(distance):
     while True:
         if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
-            robot.straight(distance)
-            motorb.run_time(1000, distance*10)
+            robot.run_time(1000, distance*10)
+            print("Straight: Succesfully Moved Distance")
             break
         elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
             robot.turn(10)
-            print("straight: angle too low")
-            screen.print("straight: angle too low")
+            print("Straight: angle too low. Current: " + gyro_sensor.angle())
         elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -5:
             robot.turn(-10)
-            print("straight: angle too high")
-            screen.print("straight: angle too high")
+            print("Straight: angle too high. Current: " + gyro_sensor.angle())
         elif gyro_sensor.angle() == 180:
             robot.turn(180)
+            print("Straight: Robot is facing the opposite direction, attempting correction...")
+
 
 def absolute_turn(degrees):
     margine_of_error = 2
@@ -89,98 +84,21 @@ def absolute_turn(degrees):
 
     while True:
         turning_degrees = gyro_sensor.angle() - starting_gyro_degrees
-        print(turning_degrees)
+        print("Current: " + turning_degrees + " Target: " + degrees) 
         #screen.draw_text(turning_degrees)
         if turning_degrees > degrees - margine_of_error or turning_degrees < degrees + margine_of_error:
             break
+        print("Turn completed")
 
 
         elif turning_degrees > degrees:
             robot.turn(-10)
+            print("Turn: angle of degrees is too high. Current Value: " + turning_degrees + " Target: " + degrees)
         elif turning_degrees < degrees:
             robot.turn(10)
-        
-
-#
-#
-
-def absolute_straight(distance):
-    while True:
-        if gyro_sensor.angle() <= 5 and gyro_sensor.angle() >= -5:
-            robot.straight(distance)
-            break
-        elif gyro_sensor.angle() < 180 and gyro_sensor.angle() > 5:
-            absolute_turn(10)
-            print("straight: angle too low")
-            #screen.draw_text("straight: angle too low")
-        elif gyro_sensor.angle() > 180 or gyro_sensor.angle() < -5:
-            absolute_turn(-10)
-            print("straight: angle too high")
-            #screen.draw_text("straight: angle too high")
-        elif gyro_sensor.angle() == 180:
-            absolute_turn(180)
+            print("Turn: angle of degrees is too low. Current Value: " + turning_degrees + " Target: " + degrees)
 
 
-        
-        
-#
-#
-
-
-
-def distance(millimeters): #converts distance in mm to 1/4 in
-    distance_value = ((millimeters/25.4)/4)
-    return distance_value
-
-x = 0
-y = 0 
-
-
-
-def go_to_middle():
-    while True:
-        #screen.draw_text(ears.distance())
-        if ears.distance() <= 1200:
-            absolute_straight(-100)
-        else:
-            absolute_turn(90)
-            break
-
-
-def collect_bottle_caps():
-    distance_to_wall = 1000
-    door_close_time = 150
-    absolute_straight(distance_to_wall)
-    door.run_time(1000, door_close_time)
-
-
-def return_to_goal():
-    absolute_turn(90)
-    absolute_straight(1000)
-    while True:
-        if ears.distance() <= 50:
-            absolute_turn(90)
-            break
-        else:
-            absolute_straight(30)
-
-def go_to_apponents_goal():
-    absolute_turn(-90)
-    absolute_straight(-1000)
-    while True:
-        if ears.distance() <= 50:
-            absolute_turn(-90)
-            break
-        else:
-            absolute_straight(-30)
-
-
-def deposit_on_goal(goal_color):
-    while True:
-        if color_sensor.color() == goal_color:
-            while True:
-                absolute_straight(20)
- 
 
 #WARNING THESE VALUES HAVE NOT BEEN TESTED
 #ROBOT MUST BE MONITORED WHILST OPERATING
