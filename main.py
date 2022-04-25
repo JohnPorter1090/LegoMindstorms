@@ -1,3 +1,4 @@
+#!/usr/bin/env pybricks-micropython
 '''
 What we'll do:
 0a. Make sure door open
@@ -20,7 +21,7 @@ Senors:
 '''
 
 
-#!/usr/bin/env pybricks-micropython
+
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -44,13 +45,18 @@ door = Motor(Port.D)
 ears = UltrasonicSensor(Port.S1)
 color_sensor = ColorSensor(Port.S4)
 
+
 #Debugging Zone
-abs_stra_margin = 1 
-abs_stra_movement_checking = 10 #distance in mm
+
+abs_stra_margin = 2 
+abs_stra_movement_checking = 25 #distance in mm
 
 abs_turn_marign = 1
 
 door_time = 1000
+
+
+
 
 def absolute_straight(distance):
     
@@ -63,12 +69,13 @@ def absolute_straight(distance):
             break
 
         if gyro_sensor.angle() > straight + abs_stra_margin: # Angle is more to the right
-            print("Abs_Straight: Angle is too far to the right. Current: " + gyro_sensor.angle() + " Target: " + straight)
-            robot.turn(-1)
-            
+            print("Abs_Straight: Angle is too far to the right. Current: " + str(gyro_sensor.angle())+ " Target: " + str(straight))
+            robot.turn(-5)
+            motorb.stop()
+
         elif gyro_sensor.angle() < straight - abs_stra_margin: # Angle is more to the left
-            print("Abs_Straight: Angle is too far to the left. Current: " + gyro_sensor.angle() + " Target: " + straight)
-            robot.turn(1)
+            print("Abs_Straight: Angle is too far to the left. Current: " + str(gyro_sensor.angle()) + " Target: " + str(straight))
+            robot.straight(5)
             
         else:
             print("Abs_Straight: Angle is perfect, continuing course")
@@ -87,11 +94,11 @@ def absolute_turn(turn_amount):
             break
 
         if gyro_sensor.angle() > destination + abs_turn_margin: #Angle is more to the right
-            print("Abs_Turn: Angle is too far to the right. Current: " + gyro_sensor.angle() + " Target: " + destination)
+            print("Abs_Turn: Angle is too far to the right. Current: " + str(gyro_sensor.angle()) + " Target: " + str(destination))
             robot.turn(-1)
             
         elif gyro_sensor.angle() < destination - abs_turn_margin: #Angle is more to the left
-            print("Abs_Turn: Angle is too far to the left. Current: " + gyro_sensor.angle() + " Target: " + destination)
+            print("Abs_Turn: Angle is too far to the left. Current: " + str(gyro_sensor.angle()) + " Target: " + str(destination))
             robot.turn(1)
         
         else:
