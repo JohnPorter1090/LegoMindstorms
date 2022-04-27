@@ -36,7 +36,7 @@ ev3 = EV3Brick()
 motorc=Motor(Port.B)
 motorb=Motor(Port.C)
 touchsensor = TouchSensor(Port.S3)
-robot = DriveBase(motorb, motorc, wheel_diameter=55.5, #FIX THE WHEEL DIAMETER PLEASE PLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASEPLEASE
+robot = DriveBase(motorb, motorc, wheel_diameter=68.8,
 axle_track=104)
 ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)
 ev3.speaker.set_volume(1000)
@@ -48,10 +48,10 @@ color_sensor = ColorSensor(Port.S4)
 
 #Debugging Zone
 
-abs_stra_margin = 2 
-abs_stra_movement_checking = 25 #distance in mm
+abs_stra_margin = 5 
+abs_stra_movement_checking = 150 #distance in mm
 
-abs_turn_marign = 1
+abs_turn_margin = 5
 
 door_time = 1000
 
@@ -71,7 +71,6 @@ def absolute_straight(distance):
         if gyro_sensor.angle() > straight + abs_stra_margin: # Angle is more to the right
             print("Abs_Straight: Angle is too far to the right. Current: " + str(gyro_sensor.angle())+ " Target: " + str(straight))
             robot.turn(-5)
-            motorb.stop()
 
         elif gyro_sensor.angle() < straight - abs_stra_margin: # Angle is more to the left
             print("Abs_Straight: Angle is too far to the left. Current: " + str(gyro_sensor.angle()) + " Target: " + str(straight))
@@ -79,7 +78,7 @@ def absolute_straight(distance):
             
         else:
             print("Abs_Straight: Angle is perfect, continuing course")
-            robot.straight(abs_stra_movement_checking)
+            robot.drive(abs_stra_movement_checking, 1000)
             distance_traveled += abs_stra_movement_checking
             
 
@@ -122,22 +121,7 @@ gyro_sensor.reset_angle(0)
 
 #Enter Movement Pattern Here
 absolute_straight(1200)
-close_door()
 absolute_straight(-100)
 absolute_turn(180)
 absolute_straight(1100)
-open_door()
-
-
-_sensor.reset_angle(0)
-
-
-#Enter Movement Pattern Here
-absolute_straight(1200)
-close_door()
-absolute_straight(-100)
-absolute_turn(180)
-absolute_straight(1100)
-open_door()
-
 
