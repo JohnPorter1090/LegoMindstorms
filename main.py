@@ -56,7 +56,7 @@ abs_turn_margin = 5
 door_time = 1000
 
 
-
+#ttt
 
 def absolute_straight(distance):
     
