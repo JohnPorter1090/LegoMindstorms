@@ -38,6 +38,14 @@ motorb=Motor(Port.C)
 touchsensor = TouchSensor(Port.S3)
 robot = DriveBase(motorb, motorc, wheel_diameter=68.8,
 axle_track=104)
+distance = 700
+
+speed = 250
+
+"""
+robot.settings(1000, 1000, 1000, 1000)
+"""
+
 ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)
 ev3.speaker.set_volume(1000)
 gyro_sensor = GyroSensor(Port.S2) # +/- 3 degrees
@@ -45,83 +53,41 @@ door = Motor(Port.D)
 ears = UltrasonicSensor(Port.S1)
 color_sensor = ColorSensor(Port.S4)
 
-
-#Debugging Zone
-
-abs_stra_margin = 5 
-abs_stra_movement_checking = 150 #distance in mm
-
-abs_turn_margin = 5
-
-door_time = 1000
-
-
-#ttt
-
-def absolute_straight(distance):
-    
-    straight = gyro_sensor.angle()
-    distance_traveled = 0
-    
-    while True:
-        if distance_traveled >= distance:
-            print("Abs_Straight: Successfully Traveled Desired Distance")
-            break
-
-        if gyro_sensor.angle() > straight + abs_stra_margin: # Angle is more to the right
-            print("Abs_Straight: Angle is too far to the right. Current: " + str(gyro_sensor.angle())+ " Target: " + str(straight))
-            robot.turn(-5)
-
-        elif gyro_sensor.angle() < straight - abs_stra_margin: # Angle is more to the left
-            print("Abs_Straight: Angle is too far to the left. Current: " + str(gyro_sensor.angle()) + " Target: " + str(straight))
-            robot.straight(5)
-            
-        else:
-            print("Abs_Straight: Angle is perfect, continuing course")
-            robot.drive(abs_stra_movement_checking, 1000)
-            distance_traveled += abs_stra_movement_checking
-            
-
-def absolute_turn(turn_amount):
-    
-    destination = gyro_sensor.angle() + turn_amount 
-    robot.turn(turn_amount)    
-    
-    while True:
-        if gyro_sensor.angle() == destination:
-            print("Abs_Turn: Successfully Turned Correct Distance")
-            break
-
-        if gyro_sensor.angle() > destination + abs_turn_margin: #Angle is more to the right
-            print("Abs_Turn: Angle is too far to the right. Current: " + str(gyro_sensor.angle()) + " Target: " + str(destination))
-            robot.turn(-1)
-            
-        elif gyro_sensor.angle() < destination - abs_turn_margin: #Angle is more to the left
-            print("Abs_Turn: Angle is too far to the left. Current: " + str(gyro_sensor.angle()) + " Target: " + str(destination))
-            robot.turn(1)
-        
-        else:
-            print("Abs_Turn: Error in absolute turning")
-         
-        
-    
-    
-
-def open_door():
-    door.run_time(1000, door_time)
-
-
-def close_door():
-    door.run_time(-1000, door_time)
-
-
-
+#1400 180 degrees
 gyro_sensor.reset_angle(0)
 
+if distance > 0:
+    while robot.distance() <= distance():
+        turn_power = 0 - gyro_sensor.angle()
+        correction = turn_power*2.5
+        robot.drive(250, correction)
+    robot.stop()
+    motorc.brake()
+    motorb.brake()
+else:
+    while robot.distance() <= distance():
+        turn_power = 0 - gyro_sensor.angle()
+        correction = turn_power*2.5
+        robot.drive(-250, correction)
+    robot.stop()
+    motorc.brake()
+    motorb.brake()
 
-#Enter Movement Pattern Here
-absolute_straight(1200)
-absolute_straight(-100)
-absolute_turn(180)
-absolute_straight(1100)
 
+
+"""
+def perfect_straight(distance):
+    
+    
+    
+def perfect_turn(degrees):
+    translated_degrees = degrees/7.77777
+    forward = gyro_sensor.angle()
+    target = 
+    
+    robot.turn(translated_degrees)
+    if gyro_sensor.angle()
+    
+
+
+"""
