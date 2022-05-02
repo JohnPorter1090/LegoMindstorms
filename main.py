@@ -1,27 +1,4 @@
 #!/usr/bin/env pybricks-micropython
-'''
-What we'll do:
-0a. Make sure door open
-1. Book it forward into the other robot
-2. Close door, turn around
-3. Move back to goal and deposit
- a.
- b.
- c. 
-4. Down and back cycle
-5. Maybe like drive into opponent goal at end...? 
--
-What we need:
--Move straight
--Turn
-
-Senors:
--Ultrasonic forward
--Touch back
-'''
-
-
-
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -32,62 +9,72 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 
 ev3 = EV3Brick()
 
+motorb=Motor(Port.B)
+motorc=Motor(Port.C)
+#doormotor = Motor(Port.D)
+ultrasonic = UltrasonicSensor(Port.S1)
+colorsensor = ColorSensor(Port.S4)
+touchSensorR = TouchSensor(Port.S3) #right
+touchSensorL = TouchSensor(Port.S2) #left
 
-motorc=Motor(Port.B)
-motorb=Motor(Port.C)
-touchsensor = TouchSensor(Port.S3)
+
 robot = DriveBase(motorb, motorc, wheel_diameter=68.8,
 axle_track=104)
-distance = 700
+robot.settings(500000000, 5000000, 5000, 5000)
 
-speed = 250
+count = 0
+"""  
+while count % 2 == 0:
+    ev3.screen.print(*"Middle: Initialized")
+    if ultrasonic.distance() > 1000:
+        ev3.screen.print(*str(ultrasonic.distance()))
+        #doormotor.run_target(1000, 1000)
+        robot.turn(180)
+        count += 1
+    else:
+        robot.straight(400)
+        ev3.screen.print(*"Middle: Moving Forward")
 
+while count % 2 != 0:
+    ev3.screen.print(*"Goal: Initialized")
+
+    if ultrasonic.distance() > 900 and colorsensor.color() == Color.RED:
+        ev3.screen.print(*str(ultrasonic.distance()))
+        ev3.screen.print(*str(colorsensor.color()))
+        #door.run_target(-1000, 1000)
+        robot.straight(-500)
+        robot.turn(180)
+        count += 1
+    else:
+        ev3.screen.print(*str(ultrasonic.distance()))
+        ev3.screen.print(*str(colorsensor.color()))
+        robot.straight(400)
+        ev3.screen.print(*"Goal: Moving Forward")
+        
 """
-robot.settings(1000, 1000, 1000, 1000)
-"""
+middleLoop = True
+goalLoop = True
 
-ev3.speaker.set_speech_options(language='de', voice='m3', speed=10, pitch=50)
-ev3.speaker.set_volume(1000)
-gyro_sensor = GyroSensor(Port.S2) # +/- 3 degrees
-door = Motor(Port.D)
-ears = UltrasonicSensor(Port.S1)
-color_sensor = ColorSensor(Port.S4)
+robot.straight(500)
 
-#1400 180 degrees
-gyro_sensor.reset_angle(0)
+while middleLoop:
+    if ultrasonic.distance() > 500:
+        robot.turn(180)
+        middleLoop = False
+    else:
+        robot.straight(20)
 
-if distance > 0:
-    while robot.distance() <= distance():
-        turn_power = 0 - gyro_sensor.angle()
-        correction = turn_power*2.5
-        robot.drive(250, correction)
-    robot.stop()
-    motorc.brake()
-    motorb.brake()
-else:
-    while robot.distance() <= distance():
-        turn_power = 0 - gyro_sensor.angle()
-        correction = turn_power*2.5
-        robot.drive(-250, correction)
-    robot.stop()
-    motorc.brake()
-    motorb.brake()
+robot.straight(500)
+while goalLoop:
+    if touchSensorR.buttonpressed() == True:
+        robot.straight(-100)
+        robot.turn(90)
+    if touchSensorL.buttonpressed() == True:
+        robot.straight(-100)
+        robot.turn(-90)
 
-
-
-"""
-def perfect_straight(distance):
-    
-    
-    
-def perfect_turn(degrees):
-    translated_degrees = degrees/7.77777
-    forward = gyro_sensor.angle()
-    target = 
-    
-    robot.turn(translated_degrees)
-    if gyro_sensor.angle()
-    
-
-
-"""
+    if ultrasonic.distance() > 500:
+        robot.straight(-100)
+        robot.turn(180)
+    else:
+        robot.straight(20)
