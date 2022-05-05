@@ -70,7 +70,7 @@ else:
         correction = turn_power*2.5
         robot.drive(-250, correction)
     robot.stop()
-    motorc.brake()
+    motorc.brake()m
     motorb.brake()
 
 
