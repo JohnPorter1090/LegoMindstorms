@@ -26,7 +26,7 @@ while True:
     if touchSensorR.pressed() == True and touchSensorL.pressed() == True:
         while touchSensorR.pressed() == True and touchSensorL.pressed() == True:
             robot.straight(-400)
-            robot.turn(90)
+            robot.turn(-90)
     elif colorsensor.color() == Color.BLUE:
         while colorsensor.color() == Color.BLUE:
             robot.straight(-400)
