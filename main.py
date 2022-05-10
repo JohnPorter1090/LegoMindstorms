@@ -20,15 +20,15 @@ touchSensorL = TouchSensor(Port.S2) #left
 
 robot = DriveBase(motorb, motorc, wheel_diameter=68.8,
 axle_track=104)
-robot.settings(90000000, 9000000, 5000, 5000)
-
+robot.settings(999999999, 999999999, 5000, 5000)
+"""
 while True:
     if touchSensorR.pressed() == True and touchSensorL.pressed() == True:
         while touchSensorR.pressed() == True and touchSensorL.pressed() == True:
             robot.straight(-400)
             robot.turn(-90)
-    elif colorsensor.color() == Color.BLUE:
-        while colorsensor.color() == Color.BLUE:
+    elif colorsensor.color() == Color.RED:
+        while colorsensor.color() == Color.RED:
             robot.straight(-400)
             robot.turn(90)
     elif touchSensorR.pressed() == True:
@@ -41,3 +41,6 @@ while True:
             robot.turn(90)
     else:
         robot.straight(600)
+"""
+while True:
+    robot.straight(10000)
