@@ -6,6 +6,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+from threading import Thread
 
 ev3 = EV3Brick()
 
@@ -20,7 +21,7 @@ touchSensorL = TouchSensor(Port.S2) #left
 
 robot = DriveBase(motorb, motorc, wheel_diameter=68.8,
 axle_track=104)
-robot.settings(999999999, 999999999, 5000, 5000)
+robot.settings(999999999*2.9, 999999999*2.9, 5000, 5000)
 """
 while True:
     if touchSensorR.pressed() == True and touchSensorL.pressed() == True:
@@ -41,6 +42,14 @@ while True:
             robot.turn(90)
     else:
         robot.straight(600)
+
+
 """
+
 while True:
-    robot.straight(10000)
+    ev3.screen.print(ev3.battery.voltage())
+    ev3.screen.print(ev3.battery.current())
+    robot.straight(1000)
+    ev3.screen.print(ev3.battery.voltage())
+    ev3.screen.print(ev3.battery.current())
+
